@@ -22,18 +22,16 @@ func SetupObserverAPI(router gin.IRouter, db *storage.Storage) {
 	observerAPI.POST("/webhook/register", addCall(db))
 	observerAPI.DELETE("/webhook/register", deleteCall(db))
 	observerAPI.GET("/status", statusCall(db))
-
-	logger.Info("Routes set up", logger.Params{"routes": len(routers)})
 }
 
 func SetupPlatformAPI(root gin.IRouter) {
-
 	root.GET("/", GetRoot)
 	root.GET("/status", GetStatus)
 
 	v1 := root.Group("/v1")
 	v2 := root.Group("/v2")
 	v3 := root.Group("/v3")
+	v4 := root.Group("/v4")
 
 	v1.GET("/", GetSupportedEndpoints)
 
@@ -59,12 +57,15 @@ func SetupPlatformAPI(root gin.IRouter) {
 	for _, collectionAPI := range platform.Platforms {
 		routerV2 := getRouter(v2, collectionAPI.Coin().Handle)
 		routerV3 := getRouter(v3, collectionAPI.Coin().Handle)
+		routerV4 := getRouter(v4, collectionAPI.Coin().Handle)
 
 		makeCollectionsRoute(routerV3, collectionAPI)
 		makeCollectionRoute(routerV3, collectionAPI)
 
 		oldMakeCollectionRoute(routerV2, collectionAPI)
 		oldMakeCollectionsRoute(routerV2, collectionAPI)
+
+		makeCollectionRouteV4(routerV4, collectionAPI)
 	}
 
 	for _, customAPI := range platform.CustomAPIs {
@@ -79,6 +80,7 @@ func SetupPlatformAPI(root gin.IRouter) {
 
 	oldMakeCategoriesBatchRoute(v2)
 	makeCategoriesBatchRoute(v3)
+	makeCategoriesBatchRouteV4(v4)
 	makeStakingDelegationsBatchRoute(v2)
 	makeStakingDelegationsSimpleBatchRoute(v2)
 
