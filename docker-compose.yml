@@ -8,21 +8,8 @@ services:
     ports:
       - 8080:80
     links:
-      - observer_api
       - platform_api
       - swagger_api
- 
-  observer_api:
-    container_name: observer_api
-    build:
-      context: .
-      args:
-        - SERVICE=observer_api
-    ports:
-      - 8422:8422
-    links:
-      - redis
-    restart: on-failure
 
   platform_api:
     container_name: platform_api
@@ -31,7 +18,7 @@ services:
       args:
         - SERVICE=platform_api
     ports:
-    - 8420:8420
+      - 8420:8420
 
   swagger_api:
     container_name: swagger_api
@@ -42,19 +29,40 @@ services:
     ports:
       - 8423:8423
 
-  platform_observer:
+  observer_notifier:
     build:
       context: .
       args:
-        - SERVICE=platform_observer
+        - SERVICE=observer_notifier
     links:
-      - redis
       - rabbit
+      - postgres
+    restart: on-failure
+
+  observer_parser:
+    build:
+      context: .
+      args:
+        - SERVICE=observer_parser
+    links:
+      - rabbit
+      - postgres
+    restart: on-failure
+
+  observer_subscriber:
+    container_name: observer_subscriber
+    build:
+      context: .
+      args:
+        - SERVICE=observer_subscriber
+    links:
+      - rabbit
+      - postgres
     restart: on-failure
 
   rabbit:
     container_name: rabbit
-    image: bitnami/rabbitmq
+    image: rabbitmq
     ports:
       - 5672:5672
     healthcheck:
@@ -63,8 +71,17 @@ services:
       timeout: 10s
       retries: 5
 
-  redis:
-    container_name: redis
-    image: redis
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=my_db
     ports:
-    - 6379:6379
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 5

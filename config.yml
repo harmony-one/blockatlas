@@ -9,7 +9,7 @@ gin:
 # If all - run all platforms in one binary. You can pick specific coin handle to run binary only with specific coin
 # Example: ethereum
 # You can see all the coin handles at coins/coins.yml file
-platform: all
+platform: binance
 
 # Sentry error tracking
 #sentry:
@@ -17,22 +17,27 @@ platform: all
 
 # The transaction watcher
 observer:
-  auth: test
   # Don't request blocks older than this
   backlog: 3h
+  # Amount of time between fetching blocks concurrently
+  fetch_blocks_interval: 1ms
   # Don't request more than N blocks at once
   backlog_max_blocks: 200
-  # Max connections to open to API
-  stream_conns: 16
+  # Limit amount of transactions in batch
+  txs_batch_limit: 3000
+  # Limit of push notifications in batch
+  push_notifications_batch_limit: 50
   # Block polling interval
   block_poll:
     min: 3s
     max: 30s
   rabbitmq:
-    uri: amqp://user:bitnami@rabbit:5672
+    uri: amqp://localhost:5672
+    consumer:
+      prefetch_count: 10
 
-storage:
-  redis: redis://redis:6379
+postgres:
+  uri: postgresql://user:pass@localhost/my_db?sslmode=disable
 
 # [BNB] Binance DEX: https://wallet.binance.org
 #       Binance Chain: https://explorer.binance.org
@@ -58,15 +63,16 @@ kin:
 
 # [XTZ] Tezos: https://tezos.com
 tezos:
-  api: https://api.tezos.id/mooncake/mainnet
+  api: https://api.tzstats.com/explorer # https://tzstats.com/docs/api/index.html#introduction
   rpc: https://mainnet.tezos.org.ua
 
-# [ETH] Ethereum: https://ethereum.org (Trust-Ray API)
+# [ETH] Ethereum: https://ethereum.org
 # ethereum:
-#  api: https://localhost:4567
-#  collections_api: https://api.opensea.io
-#  collections_api_key: [opensea_api_key]
-#  rpc: [ethereum rpc]
+# api: https://localhost:4567 (Trust-Ray API)
+# blockbook_api: [blockbook api]
+# collections_api: https://api.opensea.io
+# collections_api_key: [opensea_api_key]
+# rpc: [ethereum rpc]
 
 # [ETC] Ethereum Classic: https://ethereumclassic.org (Trust-Ray API)
 # classic:
@@ -147,9 +153,9 @@ aeternity:
 nebulas:
   api: https://explorer-backend.nebulas.io/api
 
+# [FIO] FIO: https://fioprotocol.io
 fio:
-  # api: https://addresses.fio.foundation
-  api: http://testnet.fioprotocol.io/v1/chain
+  api: https://fio.greymass.com
 
 # [BTC] Bitcoin: https://bitcoin.org/ (Blockbook API https://github.com/trezor/blockbook)
 bitcoin:
@@ -208,3 +214,9 @@ kava:
 
 kusama:
   api: https://kusama.subscan.io/api
+
+solana:
+  api: https://api.mainnet-beta.solana.com
+
+near:
+  api: https://staging-rpc.nearprotocol.com

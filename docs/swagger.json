@@ -46,124 +46,6 @@
                 }
             }
         },
-        "/observer/v1/status": {
-            "get": {
-                "description": "Get coin status",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Observer"
-                ],
-                "summary": "Get coin status",
-                "operationId": "coin_status",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer test",
-                        "description": "Bearer authorization header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.CoinStatus"
-                        }
-                    }
-                }
-            }
-        },
-        "/observer/v1/webhook/register": {
-            "post": {
-                "description": "Create a webhook for addresses transactions",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Observer"
-                ],
-                "summary": "Create a webhook",
-                "operationId": "create_webhook",
-                "parameters": [
-                    {
-                        "description": "Accounts subscriptions",
-                        "name": "subscriptions",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.Webhook"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "default": "Bearer test",
-                        "description": "Bearer authorization header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.Observer"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete a webhook for addresses transactions",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Observer"
-                ],
-                "summary": "Delete a webhook",
-                "operationId": "delete_webhook",
-                "parameters": [
-                    {
-                        "description": "Accounts subscriptions",
-                        "name": "subscriptions",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.Webhook"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "default": "Bearer test",
-                        "description": "Bearer authorization header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.Observer"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/market/charts": {
             "get": {
                 "description": "Get the charts data from an market and coin/token",
@@ -219,7 +101,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/blockatlas.ChartData"
+                            "$ref": "#/definitions/watchmarket.ChartData"
                         }
                     }
                 }
@@ -255,13 +137,6 @@
                         "in": "query"
                     },
                     {
-                        "type": "integer",
-                        "default": 1574483028,
-                        "description": "Start timestamp",
-                        "name": "time_start",
-                        "in": "query"
-                    },
-                    {
                         "type": "string",
                         "default": "USD",
                         "description": "The currency to show coin info in",
@@ -273,7 +148,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/blockatlas.ChartCoinInfo"
+                            "$ref": "#/definitions/watchmarket.ChartCoinInfo"
                         }
                     }
                 }
@@ -308,7 +183,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/blockatlas.Tickers"
+                            "$ref": "#/definitions/api.Tickers"
                         }
                     }
                 }
@@ -393,42 +268,6 @@
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/ginutils.ApiError"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/collectibles/categories": {
-            "post": {
-                "description": "Get collection categories",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Collections"
-                ],
-                "summary": "Get list of collections from a specific coin and addresses",
-                "operationId": "collection_categories_v2",
-                "parameters": [
-                    {
-                        "default": "{\"60\": [\"0xb3624367b1ab37daef42e1a3a2ced012359659b0\"]}",
-                        "description": "Payload",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.DocsResponse"
                         }
                     }
                 }
@@ -544,110 +383,6 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/blockatlas.DelegationsBatchPage"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/{coin}/collections/{address}": {
-            "get": {
-                "description": "Get all collections from the address",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Collections"
-                ],
-                "summary": "Get Collections",
-                "operationId": "collections_v2",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "ethereum",
-                        "description": "the coin name",
-                        "name": "coin",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "0x5574Cd97432cEd0D7Caf58ac3c4fEDB2061C98fB",
-                        "description": "the query address",
-                        "name": "address",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.CollectionPage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/ginutils.ApiError"
-                        }
-                    }
-                }
-            }
-        },
-        "/v2/{coin}/collections/{owner}/collection/{collection_id}": {
-            "get": {
-                "description": "Get a collection from the address",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Collections"
-                ],
-                "summary": "Get Collection",
-                "operationId": "collection_v2",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "ethereum",
-                        "description": "the coin name",
-                        "name": "coin",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "0x0875BCab22dE3d02402bc38aEe4104e1239374a7",
-                        "description": "the query address",
-                        "name": "owner",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "0x06012c8cf97bead5deae237070f9587f8e7a266d",
-                        "description": "the query collection",
-                        "name": "collection_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.CollectionPage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/ginutils.ApiError"
                         }
                     }
                 }
@@ -837,146 +572,6 @@
                 }
             }
         },
-        "/v3/collectibles/categories": {
-            "post": {
-                "description": "Get collection categories",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Collections"
-                ],
-                "summary": "Get list of collections from a specific coin and addresses",
-                "operationId": "collection_categories_v3",
-                "parameters": [
-                    {
-                        "default": "{\"60\": [\"0xb3624367b1ab37daef42e1a3a2ced012359659b0\"]}",
-                        "description": "Payload",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.DocsResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v3/{coin}/collections/{address}": {
-            "get": {
-                "description": "Get all collections from the address",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Collections"
-                ],
-                "summary": "Get Collections",
-                "operationId": "collections_v3",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "ethereum",
-                        "description": "the coin name",
-                        "name": "coin",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "0x5574Cd97432cEd0D7Caf58ac3c4fEDB2061C98fB",
-                        "description": "the query address",
-                        "name": "address",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.CollectionPage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/ginutils.ApiError"
-                        }
-                    }
-                }
-            }
-        },
-        "/v3/{coin}/collections/{owner}/collection/{collection_id}": {
-            "get": {
-                "description": "Get a collection from the address",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Collections"
-                ],
-                "summary": "Get Collection",
-                "operationId": "collection_v3",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "ethereum",
-                        "description": "the coin name",
-                        "name": "coin",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "0x0875BCab22dE3d02402bc38aEe4104e1239374a7",
-                        "description": "the query address",
-                        "name": "owner",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "0x06012c8cf97bead5deae237070f9587f8e7a266d",
-                        "description": "the query collection",
-                        "name": "collection_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/blockatlas.CollectionPage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/ginutils.ApiError"
-                        }
-                    }
-                }
-            }
-        },
         "/v4/collectibles/categories": {
             "post": {
                 "description": "Get collection categories",
@@ -1098,7 +693,52 @@
                     "type": "string"
                 },
                 "type": {
+                    "type": "object",
+                    "$ref": "#/definitions/blockatlas.CoinStatus"
+                }
+            }
+        },
+        "api.Ticker": {
+            "type": "object",
+            "properties": {
+                "coin": {
+                    "type": "integer"
+                },
+                "coin_name": {
                     "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "last_update": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "object",
+                    "$ref": "#/definitions/api.TickerPrice"
+                },
+                "token_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.TickerPrice": {
+            "type": "object",
+            "properties": {
+                "change_24h": {
+                    "type": "number"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
                 }
             }
         },
@@ -1116,88 +756,10 @@
                 }
             }
         },
-        "blockatlas.ChartCoinInfo": {
-            "type": "object",
-            "properties": {
-                "circulating_supply": {
-                    "type": "number"
-                },
-                "info": {
-                    "type": "object",
-                    "$ref": "#/definitions/blockatlas.CoinInfo"
-                },
-                "market_cap": {
-                    "type": "number"
-                },
-                "total_supply": {
-                    "type": "number"
-                },
-                "volume_24": {
-                    "type": "number"
-                }
-            }
-        },
-        "blockatlas.ChartData": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "prices": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/blockatlas.ChartPrice"
-                    }
-                }
-            }
-        },
-        "blockatlas.ChartPrice": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "integer"
-                },
-                "price": {
-                    "type": "number"
-                }
-            }
-        },
-        "blockatlas.CoinInfo": {
-            "type": "object",
-            "properties": {
-                "data_source": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "explorers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/blockatlas.Link"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "short_description": {
-                    "type": "string"
-                },
-                "socials": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/blockatlas.SocialLink"
-                    }
-                },
-                "source_code": {
-                    "type": "string"
-                },
-                "website": {
-                    "type": "string"
-                },
-                "white_paper": {
-                    "type": "string"
-                }
+        "api.Tickers": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/api.Ticker"
             }
         },
         "blockatlas.CoinStatus": {
@@ -1323,28 +885,6 @@
                 }
             }
         },
-        "blockatlas.Link": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
-        "blockatlas.Observer": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "boolean"
-                }
-            }
-        },
         "blockatlas.Resolved": {
             "type": "object",
             "properties": {
@@ -1352,20 +892,6 @@
                     "type": "integer"
                 },
                 "result": {
-                    "type": "string"
-                }
-            }
-        },
-        "blockatlas.SocialLink": {
-            "type": "object",
-            "properties": {
-                "handle": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "url": {
                     "type": "string"
                 }
             }
@@ -1430,65 +956,6 @@
                 "annual": {
                     "type": "number"
                 }
-            }
-        },
-        "blockatlas.Subscriptions": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            }
-        },
-        "blockatlas.Ticker": {
-            "type": "object",
-            "properties": {
-                "coin": {
-                    "type": "integer"
-                },
-                "coin_name": {
-                    "type": "string"
-                },
-                "error": {
-                    "type": "string"
-                },
-                "last_update": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "object",
-                    "$ref": "#/definitions/blockatlas.TickerPrice"
-                },
-                "token_id": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "blockatlas.TickerPrice": {
-            "type": "object",
-            "properties": {
-                "change_24h": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "provider": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "number"
-                }
-            }
-        },
-        "blockatlas.Tickers": {
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/blockatlas.Ticker"
             }
         },
         "blockatlas.Tx": {
@@ -1582,18 +1049,6 @@
                 "$ref": "#/definitions/blockatlas.Tx"
             }
         },
-        "blockatlas.Webhook": {
-            "type": "object",
-            "properties": {
-                "subscriptions": {
-                    "type": "object",
-                    "$ref": "#/definitions/blockatlas.Subscriptions"
-                },
-                "webhook": {
-                    "type": "string"
-                }
-            }
-        },
         "coin.ExternalCoin": {
             "type": "object",
             "properties": {
@@ -1619,6 +1074,40 @@
                 },
                 "status_message": {
                     "type": "string"
+                }
+            }
+        },
+        "watchmarket.ChartCoinInfo": {
+            "type": "object",
+            "properties": {
+                "circulating_supply": {
+                    "type": "number"
+                },
+                "info": {
+                    "type": "CoinInfo"
+                },
+                "market_cap": {
+                    "type": "number"
+                },
+                "total_supply": {
+                    "type": "number"
+                },
+                "volume_24": {
+                    "type": "number"
+                }
+            }
+        },
+        "watchmarket.ChartData": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "prices": {
+                    "type": "array",
+                    "items": {
+                        "type": "ChartPrice"
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package platform
 
 import (
 	"fmt"
+
 	"github.com/spf13/viper"
 	"github.com/trustwallet/blockatlas/coin"
 	"github.com/trustwallet/blockatlas/pkg/blockatlas"
@@ -17,11 +18,13 @@ import (
 	"github.com/trustwallet/blockatlas/platform/icon"
 	"github.com/trustwallet/blockatlas/platform/iotex"
 	"github.com/trustwallet/blockatlas/platform/nano"
+	"github.com/trustwallet/blockatlas/platform/near"
 	"github.com/trustwallet/blockatlas/platform/nebulas"
 	"github.com/trustwallet/blockatlas/platform/nimiq"
 	"github.com/trustwallet/blockatlas/platform/ontology"
 	"github.com/trustwallet/blockatlas/platform/polkadot"
 	"github.com/trustwallet/blockatlas/platform/ripple"
+	"github.com/trustwallet/blockatlas/platform/solana"
 	"github.com/trustwallet/blockatlas/platform/stellar"
 	"github.com/trustwallet/blockatlas/platform/tezos"
 	"github.com/trustwallet/blockatlas/platform/theta"
@@ -42,13 +45,17 @@ func GetVar(name string) string {
 }
 
 func GetApiVar(coinId uint) string {
-	varName := fmt.Sprintf("%s.api", coin.Coins[coinId].Handle)
+	varName := fmt.Sprintf("%s.api", GetHandle(coinId))
 	return GetVar(varName)
 }
 
 func GetRpcVar(coinId uint) string {
-	varName := fmt.Sprintf("%s.rpc", coin.Coins[coinId].Handle)
+	varName := fmt.Sprintf("%s.rpc", GetHandle(coinId))
 	return GetVar(varName)
+}
+
+func GetHandle(coinId uint) string {
+	return coin.Coins[coinId].Handle
 }
 
 func getPlatformMap() blockatlas.Platforms {
@@ -69,6 +76,7 @@ func getPlatformMap() blockatlas.Platforms {
 		coin.Ontology().Handle:     ontology.Init(GetApiVar(coin.ONT)),
 		coin.Algorand().Handle:     algorand.Init(GetApiVar(coin.ALGO)),
 		coin.Aeternity().Handle:    aeternity.Init(GetApiVar(coin.AE)),
+		coin.Solana().Handle:       solana.Init(GetApiVar(coin.SOL)),
 		coin.Tezos().Handle:        tezos.Init(GetApiVar(coin.XTZ), GetRpcVar(coin.XTZ)),
 		coin.Binance().Handle:      binance.Init(GetApiVar(coin.BNB), GetVar("binance.dex")),
 		coin.Zilliqa().Handle:      zilliqa.Init(GetApiVar(coin.ZIL), GetVar("zilliqa.key"), GetRpcVar(coin.ZIL), GetVar("zilliqa.lookup")),
@@ -98,7 +106,8 @@ func getPlatformMap() blockatlas.Platforms {
 		coin.Callisto().Handle:     ethereum.Init(coin.CLO, GetApiVar(coin.CLO), GetRpcVar(coin.CLO)),
 		coin.Wanchain().Handle:     ethereum.Init(coin.WAN, GetApiVar(coin.WAN), GetRpcVar(coin.WAN)),
 		coin.Tomochain().Handle:    ethereum.Init(coin.TOMO, GetApiVar(coin.TOMO), GetRpcVar(coin.TOMO)),
-		coin.Ethereum().Handle:     ethereum.InitWitCollection(coin.ETH, GetApiVar(coin.ETH), GetRpcVar(coin.ETH), GetVar("ethereum.collections_api"), GetVar("ethereum.collections_api_key")),
+		coin.Ethereum().Handle:     ethereum.InitWitCollection(coin.ETH, GetApiVar(coin.ETH), GetRpcVar(coin.ETH), GetVar("ethereum.blockbook_api"), GetVar("ethereum.collections_api"), GetVar("ethereum.collections_api_key")),
+		coin.Near().Handle:         near.Init(GetApiVar(coin.NEAR)),
 	}
 }
 

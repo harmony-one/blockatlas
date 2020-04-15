@@ -2,26 +2,37 @@ package blockatlas
 
 import "strconv"
 
-type Subscriptions map[string][]string
+type (
+	Subscriptions map[string][]string
 
-type Webhook struct {
-	Subscriptions Subscriptions `json:"subscriptions"`
-	Webhook       string        `json:"webhook"`
-}
+	SubscriptionOperation string
 
-type CoinStatus struct {
-	Height int64  `json:"height"`
-	Error  string `json:"error,omitempty"`
-}
+	SubscriptionEvent struct {
+		Subscriptions Subscriptions         `json:"subscriptions"`
+		Id            uint                  `json:"id"`
+		Operation     SubscriptionOperation `json:"operation"`
+	}
 
-type Observer struct {
-	Status  bool   `json:"status"`
-	Message string `json:"message"`
-}
+	Subscription struct {
+		Coin    uint   `json:"coin"`
+		Address string `json:"address"`
+		Id      uint   `json:"id"`
+	}
 
-func (w *Webhook) ParseSubscriptions() []Subscription {
+	CoinStatus struct {
+		Height int64  `json:"height"`
+		Error  string `json:"error,omitempty"`
+	}
+
+	Observer struct {
+		Status  bool   `json:"status"`
+		Message string `json:"message"`
+	}
+)
+
+func (e *SubscriptionEvent) ParseSubscriptions(s Subscriptions) []Subscription {
 	subs := make([]Subscription, 0)
-	for coinStr, perCoin := range w.Subscriptions {
+	for coinStr, perCoin := range s {
 		coin, err := strconv.Atoi(coinStr)
 		if err != nil {
 			continue
@@ -30,7 +41,7 @@ func (w *Webhook) ParseSubscriptions() []Subscription {
 			subs = append(subs, Subscription{
 				Coin:    uint(coin),
 				Address: addr,
-				Webhook: w.Webhook,
+				Id:      e.Id,
 			})
 		}
 	}

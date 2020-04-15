@@ -22,25 +22,14 @@ type (
 
 var _ error = (*Error)(nil)
 
-func (e *Error) isEmpty() bool {
-	return e.meta == nil && e.Type == TypeNone && e.Err == nil
-}
-
 func (e *Error) Error() string {
-	r, err := e.MarshalJSON()
-	if err != nil {
-		return e.Err.Error()
-	}
-	return string(r)
+	return e.String()
 }
 
 func (e *Error) String() string {
 	msg := e.Err.Error()
 	if e.Type != TypeNone {
 		msg = fmt.Sprintf("%s | Type: %s", msg, e.Type.String())
-	}
-	if len(e.Meta()) > 0 {
-		msg = fmt.Sprintf("%s | Meta: %s", msg, e.Meta())
 	}
 	if len(e.stack) > 0 {
 		msg = fmt.Sprintf("%s | Stack: %s", msg, e.stack)

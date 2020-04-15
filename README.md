@@ -1,11 +1,9 @@
 # Block Atlas by Trust Wallet
 
 ![Go Version](https://img.shields.io/github/go-mod/go-version/TrustWallet/blockatlas)
-[![GoDoc](https://godoc.org/github.com/TrustWallet/blockatlas?status.svg)](https://godoc.org/github.com/TrustWallet/blockatlas) 
 [![Build Status](https://dev.azure.com/TrustWallet/Trust%20BlockAtlas/_apis/build/status/TrustWallet.blockatlas?branchName=master)](https://dev.azure.com/TrustWallet/Trust%20BlockAtlas/_build/latest?definitionId=27&branchName=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/43834b0c94ad4f6088629aa3e3bb5e94)](https://www.codacy.com/app/TrustWallet/blockatlas?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TrustWallet/blockatlas&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/trustwallet/blockatlas/branch/master/graph/badge.svg)](https://codecov.io/gh/trustwallet/blockatlas)
 [![Go Report Card](https://goreportcard.com/badge/trustwallet/blockatlas)](https://goreportcard.com/report/TrustWallet/blockatlas)
-[![Docker](https://img.shields.io/docker/cloud/build/trustwallet/blockatlas.svg)](https://hub.docker.com/r/trustwallet/blockatlas)
 
 > BlockAtlas is a clean explorer API and transaction observer for cryptocurrencies.
 
@@ -13,52 +11,73 @@ BlockAtlas connects to nodes or explorer APIs of the supported coins and maps tr
 account transaction history into a generic, easy to work with JSON format.
 It is in production use at the [Trust Wallet app](https://trustwallet.com/), 
 the official cryptocurrency wallet of Binance. Also is in production at the [BUTTON Wallet](https://buttonwallet.com), Telegram based non-custodial wallet.
-The observer API watches the chain for new transactions and generates notifications by webhooks.
+The observer API watches the chain for new transactions and generates notifications by guids.
 
 #### Supported Coins
 
-<a href="https://binance.com" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/714.png" width="32" /></a>
-<a href="https://nimiq.com" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/242.png" width="32" /></a>
-<a href="https://ripple.com" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/144.png" width="32" /></a>
-<a href="https://stellar.org" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/148.png" width="32" /></a>
-<a href="https://kin.org" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/2017.png" width="32" /></a>
-<a href="https://tezos.com" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/1729.png" width="32" /></a>
-<a href="https://aion.network" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/425.png" width="32" /></a>
-<a href="https://ethereum.org" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/60.png" width="32" /></a>
-<a href="https://ethereumclassic.github.io" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/61.png" width="32" /></a>
-<a href="https://poa.network" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/178.png" width="32" /></a>
-<a href="https://callisto.network" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/820.png" width="32" /></a>
-<a href="https://gochain.io" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/6060.png" width="32" /></a>
-<a href="https://wanchain.org" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/5718350.png" width="32" /></a>
-<a href="https://thundercore.com" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/1001.png" width="32" /></a>
-<a href="https://icon.foundation" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/74.png" width="32" /></a>
-<a href="https://tron.network" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/195.png" width="32" /></a>
-<a href="https://vechain.org/" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/818.png" width="32" /></a>
-<a href="https://www.thetatoken.org/" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/500.png" width="32" /></a>
-<a href="https://cosmos.network/" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/118.png" width="32" /></a>
-<a href="https://bitcoin.org/" target="_blank"><img src="https://raw.githubusercontent.com/TrustWallet/tokens/master/coins/0.png" width="32" /></a>
+<a href="https://binance.com" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png" width="32" /></a>
+<a href="https://nimiq.com" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nimiq/info/logo.png" width="32" /></a>
+<a href="https://ripple.com" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ripple/info/logo.png" width="32" /></a>
+<a href="https://stellar.org" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/stellar/info/logo.png" width="32" /></a>
+<a href="https://kin.org" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/kin/info/logo.png" width="32" /></a>
+<a href="https://tezos.com" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tezos/info/logo.png" width="32" /></a>
+<a href="https://aion.network" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/aion/info/logo.png" width="32" /></a>
+<a href="https://ethereum.org" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png" width="32" /></a>
+<a href="https://ethereumclassic.org/" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/classic/info/logo.png" width="32" /></a>
+<a href="https://poa.network" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/poa/info/logo.png" width="32" /></a>
+<a href="https://callisto.network" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/callisto/info/logo.png" width="32" /></a>
+<a href="https://gochain.io" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/gochain/info/logo.png" width="32" /></a>
+<a href="https://wanchain.org" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/wanchain/info/logo.png" width="32" /></a>
+<a href="https://thundercore.com" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/thundertoken/info/logo.png" width="32" /></a>
+<a href="https://icon.foundation" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/icon/info/logo.png" width="32" /></a>
+<a href="https://tron.network" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tron/info/logo.png" width="32" /></a>
+<a href="https://vechain.org/" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/vechain/info/logo.png" width="32" /></a>
+<a href="https://www.thetatoken.org/" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/theta/info/logo.png" width="32" /></a>
+<a href="https://cosmos.network/" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/cosmos/info/logo.png" width="32" /></a>
+<a href="https://bitcoin.org/" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/bitcoin/info/logo.png" width="32" /></a>
 <a href="https://harmony.one/" target="_blank"><img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/harmony/info/logo.png" width="32" /></a>
+
+## Architecture
+
+#### NOTE
+Currently Blockatlas is under active development and is not well documented. If you still want to run it on your own or help to contribute, **please** pay attention that currenlty integration, nemwan, functional tests are not working locally without all endpoints. We are fixing that issue and soon you will be able to test all the stuff locally
+
+Blockatlas allows to:
+- Get information about transactions, tokens, staking details, collectibles, crypto domains for supported coins.
+- Subscribe for price notifications via Rabbit MQ
+
+Platform API is independent service and can work with the specific blockchain only (like bitcoin, ethereum, etc)
+
+Notifications:
+
+(Observer Subscriber Producer) - Create new blockatlas.SubscriptionEvent [Not implemented at Atlas, write it on your own]
+
+(Observer Subscriber) - Get subscriptions from queue, set them to the DB
+
+(Observer Parser) - Parse the block, convert block to the transactions batch, send to queue
+
+(Observer Notifier) - Check each transaction for having the same address as stored at DB, if so - send tx data and id to the next queue
+
+(Observer Notifier Consumer) - Notify the user [Not implemented at Atlas, write it on your own]
+
+```
+New Subscriptions --(Rabbit MQ)--> Subscriber --> DB
+                                                   |
+                      Parser  --(Rabbit MQ)--> Notifier --(Rabbit MQ)--> Notifier Consumer --> User
+
+```
+
+The whole flow is not availible at Atlas repo. We will have integration tests with it. Also there will be examples of all instances soon.
 
 ## Setup
 
 ### Requirements
 
  * [Go Toolchain](https://golang.org/doc/install) versions 1.13+
- * [Redis](https://redis.io/topics/quickstart) instance for platform_observer
+ * [Postgres](https://www.postgresql.org/download) storing user subscriptions and latest parsed block number
+ * [Rabbit MQ](https://www.rabbitmq.com/#getstarted) using to pass subscriptions and send transaction notifications
 
 ### From Source
-
-There are multiple services:
-
-1. Platform API - to get transactions, staking, tokens, domain lookup for supported coins in common format
-2. Observer API - to subscribe several addresses on different supported coins and receive webhook
-3. Swagger API - swagger for all handlers of 1-3 APIs. You need to route requests to them on you own (nginx)
-
-There are workers that are linked with Observer API and Market API:
-
-5. Platform Observer - fetching latest blocks, parse them to common block specification, check subscribed addresses - send webhook. We use Redis to get information about subscribed addresses per coin with webhooks and caching latest block that was processed by observer
-
-Observer API <-> Redis <-> Platform Observer
 
 #### IMPORTANT
 
@@ -69,24 +88,27 @@ ATLAS_PLATFORM=ethereum go run main.go
 ```
 You will run platform API for Ethereum coin only. You can run 30 coins with 30 binaries for scalability and sustainability. Howevever, you can run all of them at once by using ```ATLAS_PLATFORM=all``` env param
 
-It works the same for platoform_observer - you can run all observer at 1 binary or 30 coins per 30 binaries
+It works the same for observer_worker - you can run all observer at 1 binary or 30 coins per 30 binaries
 
 ```shell
 # Download source to $GOPATH
 go get -u github.com/trustwallet/blockatlas
 cd $(go env GOPATH)/src/github.com/trustwallet/blockatlas
 
-# Start platform_observer with the path to the config.yml ./ 
-go build -o platform-observer-bin cmd/platform_observer/main.go && ./platform-observer-bin -c config.yml
+# Start observer_parser with the path to the config.yml ./ 
+go build -o observer_parser-bin cmd/observer_parser/main.go && ./observer_parser-bin -c config.yml
+
+# Start observer_notifier with the path to the config.yml ./ 
+go build -o observer_notifier-bin cmd/observer_notifier/main.go && ./observer_notifier-bin -c config.yml
+
+# Start observer_subscriber with the path to the config.yml ./ 
+go build -o observer_subscriber-bin cmd/observer_subscriber/main.go && ./observer_subscriber-bin -c config.yml
 
 # Start Platform API server at port 8420 with the path to the config.yml ./ 
-go build -o platform-api-bin cmd/platform_api/main.go  && ./platform-api-bin -p 8420 -c config.yml
-
-# Start Observer API server at port 8422 with the path to the config.yml ./ 
-go build -o observer-api-bin cmd/observer-api/main.go  && ./observer-api-bin -p 8422 -c config.yml
+go build -o platform-api-bin cmd/platform_api/main.go && ./platform-api-bin -p 8420 -c config.yml
 
 # Startp Swagger API server at port 8422 with the path to the config.yml ./ 
-go build -o swagger-api-bin cmd/swagger-api/main.go  && ./swagger-api-bin -p 8423
+go build -o swagger-api-bin cmd/swagger-api/main.go && ./swagger-api-bin -p 8423
 ```
 
 OR 
@@ -103,10 +125,6 @@ make start
 
 Build and run from local Dockerfile:
 
-You should change `config.yml`:
-```yaml
-redis: redis://redis:6379
-```
 Then build:
 ```shell
 docker-compose build
@@ -121,8 +139,6 @@ If you need to start one service:
 ```shell
 # Run only platform API 
 docker-compose start platform_api
-# Run only observer for addresses and api for it
-docker-compose start platform_observer observer_api redis
 # Run swagger api
 docker-compose start swagger_api
 ```
