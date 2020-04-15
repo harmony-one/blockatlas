@@ -44,12 +44,16 @@ func (c *Client) GetBlockByNumber(num int64) (info BlockInfo, err error) {
 }
 
 func (c *Client) GetValidators() (validators Validators, err error) {
-	err = c.Get(&validators, "hmy_getAllValidatorAddresses", nil)
+	err = c.RpcCall(&validators.Validators, "hmy_getAllValidatorInformation", []interface{}{-1})
+	if err != nil {
+		logger.Error(err, "Harmony: Failed to get all validator addresses")
+	}
+
 	return
 }
 
 func (c *Client) GetDelegations(address string) (delegations Delegations, err error) {
-	err = c.RpcCall(&delegations, "hmy_getDelegationsByDelegator", []interface{}{address})
+	err = c.RpcCall(&delegations.List, "hmy_getDelegationsByDelegator", []interface{}{address})
 	if err != nil {
 		logger.Error(err, "Harmony: Failed to get delegations for address")
 	}
@@ -67,19 +71,6 @@ func (c *Client) GetBalance(address string) (string, error) {
 		return "0", err
 	}
 	return balance, nil
-}
-
-func (c *Client) GetAPR() (float64, error) {
-	var aprInfo string
-	err := c.RpcCall(&aprInfo, "hmy_getAPR", nil)
-	if err != nil {
-		return 0, err
-	}
-	decimalBlock, err := numbers.HexToDecimal(aprInfo)
-	if err != nil {
-		return 0, err
-	}
-	return strconv.ParseFloat(decimalBlock, 64)
 }
 
 func hexToInt(hex string) (uint64, error) {

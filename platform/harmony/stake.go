@@ -5,6 +5,8 @@ import (
 	"github.com/trustwallet/blockatlas/pkg/errors"
 	"github.com/trustwallet/blockatlas/pkg/logger"
 	services "github.com/trustwallet/blockatlas/services/assets"
+	"math/big"
+	"strconv"
 )
 
 func (p *Platform) GetValidators() (blockatlas.ValidatorPage, error) {
@@ -14,23 +16,42 @@ func (p *Platform) GetValidators() (blockatlas.ValidatorPage, error) {
 		return results, err
 	}
 
-	apr, err := p.client.GetAPR()
-	if err != nil {
-		apr = Annual
-	}
-
 	for _, v := range validators.Validators {
+		var apr float64
+		if apr, err = strconv.ParseFloat(v.Lifetime.Apr, 64); err != nil {
+			apr = 0
+		}
 		results = append(results, normalizeValidator(v, apr))
 	}
+
 	return results, nil
 }
 
 func (p *Platform) GetDetails() blockatlas.StakingDetails {
-	apr, err := p.client.GetAPR()
-	if err != nil {
-		apr = Annual
-	}
+	apr := p.GetMaxAPR()
 	return getDetails(apr)
+}
+
+func (p *Platform) GetMaxAPR() float64 {
+	validators, err := p.client.GetValidators()
+	if err != nil {
+		logger.Error("GetMaxAPR", logger.Params{"details": err, "platform": p.Coin().Symbol})
+		return Annual
+	}
+
+	var max = 0.0
+	for _, e := range validators.Validators {
+		var apr float64
+		if apr, err = strconv.ParseFloat(e.Lifetime.Apr, 64); err != nil {
+			apr = 0.0
+		}
+
+		if apr > max {
+			max = apr
+		}
+	}
+
+	return max
 }
 
 func (p *Platform) GetDelegations(address string) (blockatlas.DelegationsPage, error) {
@@ -43,6 +64,7 @@ func (p *Platform) GetDelegations(address string) (blockatlas.DelegationsPage, e
 	if err != nil {
 		return nil, err
 	}
+
 	return NormalizeDelegations(delegations.List, validators), nil
 }
 
@@ -62,9 +84,16 @@ func NormalizeDelegations(delegations []Delegation, validators blockatlas.Valida
 			logger.Error(errors.E("Validator not found", errors.Params{"address": v.ValidatorAddress, "platform": "harmony", "delegation": v.DelegatorAddress}))
 			continue
 		}
+
+		bigval := new(big.Float)
+		bigval.SetFloat64(v.Amount)
+
+		result := new(big.Int)
+		bigval.Int(result) // store converted number in result
+
 		delegation := blockatlas.Delegation{
 			Delegator: validator,
-			Value:     v.Amount.String(),
+			Value:     result.String(), // v.Amount.String(),
 			Status:    blockatlas.DelegationStatusActive,
 		}
 		results = append(results, delegation)
@@ -83,8 +112,8 @@ func getDetails(apr float64) blockatlas.StakingDetails {
 
 func normalizeValidator(v Validator, apr float64) (validator blockatlas.Validator) {
 	return blockatlas.Validator{
-		Status:  true,
-		ID:      v.Address,
+		Status:  v.Active,
+		ID:      v.Info.Address,
 		Details: getDetails(apr),
 	}
 }
