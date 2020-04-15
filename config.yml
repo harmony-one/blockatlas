@@ -207,7 +207,7 @@ digibyte:
   api: https://dgb1.trezor.io/api
 
 harmony:
-  api: https://api.s0.os.hmny.io
+  api: https://api.s0.t.hmny.io
 
 kava:
   api: https://data.kava.io
